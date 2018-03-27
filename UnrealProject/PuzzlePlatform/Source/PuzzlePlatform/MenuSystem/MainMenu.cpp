@@ -30,7 +30,7 @@ void UMainMenu::OnHost()
 {
 	if (MenuInterface != nullptr)
 	{
-		MenuInterface->Host();
+		MenuInterface->CreateGameSession();
 	}
 }
 

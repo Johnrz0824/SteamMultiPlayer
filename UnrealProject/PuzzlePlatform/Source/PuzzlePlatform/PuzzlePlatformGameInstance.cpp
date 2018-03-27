@@ -8,8 +8,12 @@
 #include "Blueprint/UserWidget.h"
 #include "MenuSystem/MainMenu.h"
 #include "MenuSystem/GameMenu.h"
+#include "OnlineSessionSettings.h"
+#include "OnlineSessionInterface.h"
 #include "OnlineSubsystem.h"
 #include "UMG.h"
+
+const static FName SESSION_NAME =TEXT("My Session Game");
 
 UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitializer & ObjectInitalizer)
 {
@@ -25,31 +29,57 @@ UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitialize
 void UPuzzlePlatformGameInstance::Init()
 {
 	Super::Init();
-	UE_LOG(LogTemp, Warning, TEXT("Found:%s"),*MenuClass->GetName());
-	UE_LOG(LogTemp, Warning, TEXT("Found:%s"), *GameMenuClass->GetName());
 	OSS = IOnlineSubsystem::Get();
 	if (OSS != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Found OSS:%s"),*OSS->GetSubsystemName().ToString());
-		IOnlineSessionPtr sessionInterface = OSS->GetSessionInterface();
-		if(sessionInterface.IsValid())
-			UE_LOG(LogTemp, Warning, TEXT("Found Session Interface"));
+		SessionInterface = OSS->GetSessionInterface();
+		if (SessionInterface.IsValid())
+		{
+			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnCreateSessionCompelete);
+			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnDestroySessionCompelete);
+		}
+	}
+}
+
+void UPuzzlePlatformGameInstance::CreateGameSession()
+{
+	if (SessionInterface.IsValid())
+	{
+		auto existingSession = SessionInterface->GetNamedSession(SESSION_NAME);
+		if (existingSession == nullptr)
+		{
+			FOnlineSessionSettings sessionSettings;
+			SessionInterface->CreateSession(0, SESSION_NAME, sessionSettings);
+		}
+		else
+		{
+			SessionInterface->DestroySession(SESSION_NAME);
+		}
 	}
 	else
 		UE_LOG(LogTemp, Warning, TEXT("No OSS!!"));
-
 }
 
-void UPuzzlePlatformGameInstance::Host()
+void UPuzzlePlatformGameInstance::OnCreateSessionCompelete(FName SessionName, bool Success)
 {
-	UEngine* engine = GetEngine();
-	if (!ensure(engine != nullptr))return;
-
-	engine->AddOnScreenDebugMessage(0,1.f,FColor::Yellow,TEXT("Hosting"));
-
+	if (!Success)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Fail"));
+		return;
+	}
 	UWorld* world = GetWorld();
 	if (!ensure(world != nullptr))return;
 	world->ServerTravel("/Game/PuzzlePlatform/Lobby?listen");
+}
+
+void UPuzzlePlatformGameInstance::OnDestroySessionCompelete(FName SessionName, bool Success)
+{
+	if (!Success)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Destroy Fail"));
+		return;
+	}
+	CreateGameSession();
 }
 
 void UPuzzlePlatformGameInstance::Join(const FString &address)
