@@ -15,12 +15,14 @@ class PUZZLEPLATFORM_API UPuzzlePlatformGameInstance : public UGameInstance, pub
 {
 	GENERATED_BODY()
 
+private:
+	class IOnlineSubsystem* OSS;
 public:
 		UPuzzlePlatformGameInstance(const FObjectInitializer & ObjectInitalizer);
 		virtual void Init()override;
 	
 		UFUNCTION(Exec, BlueprintCallable)
-			void LoadMenu();
+			void LoadMenuWidget();
 		UFUNCTION(Exec, BlueprintCallable)
 			void LoadGameMenu();
 		UFUNCTION(Exec)

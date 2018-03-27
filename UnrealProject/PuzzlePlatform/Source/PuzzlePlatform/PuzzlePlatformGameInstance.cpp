@@ -8,6 +8,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MenuSystem/MainMenu.h"
 #include "MenuSystem/GameMenu.h"
+#include "OnlineSubsystem.h"
 #include "UMG.h"
 
 UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitializer & ObjectInitalizer)
@@ -26,6 +27,17 @@ void UPuzzlePlatformGameInstance::Init()
 	Super::Init();
 	UE_LOG(LogTemp, Warning, TEXT("Found:%s"),*MenuClass->GetName());
 	UE_LOG(LogTemp, Warning, TEXT("Found:%s"), *GameMenuClass->GetName());
+	OSS = IOnlineSubsystem::Get();
+	if (OSS != nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Found OSS:%s"),*OSS->GetSubsystemName().ToString());
+		IOnlineSessionPtr sessionInterface = OSS->GetSessionInterface();
+		if(sessionInterface.IsValid())
+			UE_LOG(LogTemp, Warning, TEXT("Found Session Interface"));
+	}
+	else
+		UE_LOG(LogTemp, Warning, TEXT("No OSS!!"));
+
 }
 
 void UPuzzlePlatformGameInstance::Host()
@@ -62,7 +74,7 @@ void UPuzzlePlatformGameInstance::LoadMainMenu()
 	controller->ClientTravel("/Game/MenuSystem/MainMenu", ETravelType::TRAVEL_Absolute);
 }
 
-void UPuzzlePlatformGameInstance::LoadMenu()
+void UPuzzlePlatformGameInstance::LoadMenuWidget()
 {
 	if (!ensure(MenuClass))return;
 	UMainMenu* Menu = CreateWidget<UMainMenu>(this, MenuClass);
