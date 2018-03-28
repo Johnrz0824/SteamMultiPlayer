@@ -20,6 +20,7 @@ class PUZZLEPLATFORM_API UPuzzlePlatformGameInstance : public UGameInstance, pub
 private:
 	class IOnlineSubsystem* OSS;
 	IOnlineSessionPtr SessionInterface;
+	TSharedPtr<FOnlineSessionSearch> SessionSearch;
 public:
 		UPuzzlePlatformGameInstance(const FObjectInitializer & ObjectInitalizer);
 		virtual void Init()override;
@@ -32,6 +33,8 @@ public:
 			void OnCreateSessionCompelete(FName SessionName, bool Success);
 		UFUNCTION(Exec)
 			void OnDestroySessionCompelete(FName SessionName, bool Success);
+		UFUNCTION(Exec)
+			void OnFindSessionCompelete(bool Success);
 
 		UFUNCTION(Exec)
 			void CreateGameSession()override;
