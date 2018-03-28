@@ -21,6 +21,7 @@ private:
 	class IOnlineSubsystem* OSS;
 	IOnlineSessionPtr SessionInterface;
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
+	class UMainMenu* MainMenu;
 public:
 		UPuzzlePlatformGameInstance(const FObjectInitializer & ObjectInitalizer);
 		virtual void Init()override;
@@ -46,6 +47,8 @@ public:
 
 		UFUNCTION(Exec)
 			void QuitGame()override;
+
+		void RefreshServerList()override;
 		TSubclassOf<class UUserWidget> MenuClass;
 		TSubclassOf<class UUserWidget> GameMenuClass;
 };

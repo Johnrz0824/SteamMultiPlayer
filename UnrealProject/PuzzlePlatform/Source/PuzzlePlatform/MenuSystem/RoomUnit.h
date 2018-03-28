@@ -13,9 +13,8 @@ UCLASS()
 class PUZZLEPLATFORM_API URoomUnit : public UUserWidget
 {
 	GENERATED_BODY()
-	
-	
 public:
-	void Setup();
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* ServerName;
 	
 };

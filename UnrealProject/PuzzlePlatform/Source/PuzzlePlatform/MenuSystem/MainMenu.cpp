@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "WidgetSwitcher.h"
 #include "ScrollBox.h"
+#include "TextBlock.h"
 #include "Engine/World.h"
 #include "UObject/ConstructorHelpers.h"
 #include "MenuSystem/RoomUnit.h"
@@ -61,10 +62,23 @@ void UMainMenu::OnJoin()
 {
 	if (MenuInterface != nullptr)
 	{
+		MenuInterface->RefreshServerList();
+	}
+}
+
+void UMainMenu::SetServerList(TArray<FString> ServerNames)
+{
+	ServerList->ClearChildren();
+	if (MenuInterface != nullptr)
+	{
 		if (!ensure(ServerListUnit))return;
-		URoomUnit* unit = CreateWidget<URoomUnit>(GetWorld()->GetGameInstance(), ServerListUnit);
-		if (!ensure(unit))return;
-		ServerList->AddChild(unit);
+		for (const auto &name : ServerNames)
+		{
+			URoomUnit* unit = CreateWidget<URoomUnit>(GetWorld()->GetGameInstance(), ServerListUnit);
+			if (!ensure(unit))return;
+			ServerList->AddChild(unit);
+			unit->ServerName->SetText(FText::FromString(name));
+		}
 	}
 }
 

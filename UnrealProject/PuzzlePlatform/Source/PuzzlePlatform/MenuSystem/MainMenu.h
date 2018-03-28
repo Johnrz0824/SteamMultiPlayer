@@ -26,6 +26,7 @@ public:
 	void SetMenuInterface(IMenuInterface* menuInterface);
 	void Setup();
 	void TearDown();
+	void SetServerList(TArray<FString> ServerNames);
 
 protected:
 	virtual bool Initialize()override;
@@ -74,6 +75,7 @@ private:
 
 		UFUNCTION()
 		void OpenJoinMenu();
+
 
 		IMenuInterface* MenuInterface;
 		TSubclassOf<class UUserWidget> ServerListUnit;

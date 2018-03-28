@@ -38,14 +38,6 @@ void UPuzzlePlatformGameInstance::Init()
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnCreateSessionCompelete);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnDestroySessionCompelete);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnFindSessionCompelete);
-
-			SessionSearch = MakeShareable(new FOnlineSessionSearch());
-			if (SessionSearch.IsValid())
-			{
-				SessionSearch->bIsLanQuery = true;
-				SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
-				UE_LOG(LogTemp, Warning, TEXT("Find"));
-			}
 		}
 	}
 }
@@ -102,14 +94,32 @@ void UPuzzlePlatformGameInstance::OnFindSessionCompelete( bool Success)
 		return;
 	}
 	UE_LOG(LogTemp, Warning, TEXT("Find Success %d"), SessionSearch->SearchResults.Num());
+
+	TArray<FString> arr;
 	for (auto &result : SessionSearch->SearchResults)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Find Session:%s"), *result.Session.GetSessionIdStr());
+		arr.Push(result.Session.GetSessionIdStr());
+	}
+	MainMenu->SetServerList(arr);
+}
+
+void UPuzzlePlatformGameInstance::RefreshServerList()
+{
+	SessionSearch = MakeShareable(new FOnlineSessionSearch());
+	if (SessionSearch.IsValid())
+	{
+		SessionSearch->bIsLanQuery = true;
+		SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
+		UE_LOG(LogTemp, Warning, TEXT("Find"));
 	}
 }
 
 void UPuzzlePlatformGameInstance::Join(const FString &address)
 {
+	if (MainMenu != nullptr)
+	{
+		MainMenu->TearDown();
+	}
 	UEngine* engine = GetEngine();
 	if (!ensure(engine != nullptr))return;
 
@@ -135,6 +145,7 @@ void UPuzzlePlatformGameInstance::LoadMenuWidget()
 	if (!ensure(MenuClass))return;
 	UMainMenu* Menu = CreateWidget<UMainMenu>(this, MenuClass);
 	if (!ensure(Menu))return;
+	MainMenu = Menu;
 	Menu->Setup();
 	Menu->SetMenuInterface(this);
 }
