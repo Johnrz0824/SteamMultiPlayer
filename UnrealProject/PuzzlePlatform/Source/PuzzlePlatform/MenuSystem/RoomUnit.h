@@ -15,6 +15,7 @@ class PUZZLEPLATFORM_API URoomUnit : public UUserWidget
 	GENERATED_BODY()
 	
 	
-	
+public:
+	void Setup();
 	
 };

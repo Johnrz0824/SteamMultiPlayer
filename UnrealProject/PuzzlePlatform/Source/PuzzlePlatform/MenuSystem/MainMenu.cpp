@@ -3,17 +3,20 @@
 #include "MainMenu.h"
 #include "Button.h"
 #include "WidgetSwitcher.h"
+#include "ScrollBox.h"
 #include "Engine/World.h"
 #include "UObject/ConstructorHelpers.h"
+#include "MenuSystem/RoomUnit.h"
+#include "Blueprint/UserWidget.h"
 #include "EditableTextBox.h"
 
-/*UMainMenu::UMainMenu(const FObjectInitializer & ObjectInitializer)
+UMainMenu::UMainMenu(const FObjectInitializer & ObjectInitializer):Super(ObjectInitializer)
 {
-	/*ConstructorHelpers::FClassFinder<UUserWidget> ServerListUnitBPClass(TEXT("/Game/MenuSystem/WBP_RoomUnit"));
+	ConstructorHelpers::FClassFinder<UUserWidget> ServerListUnitBPClass(TEXT("/Game/MenuSystem/WBP_RoomUnit"));
 	if (!ensure(ServerListUnitBPClass.Class != nullptr))return;
 	ServerListUnit = ServerListUnitBPClass.Class;
 }
-*/
+
 bool UMainMenu::Initialize()
 {
 	bool success =	Super::Initialize();
@@ -58,6 +61,10 @@ void UMainMenu::OnJoin()
 {
 	if (MenuInterface != nullptr)
 	{
+		if (!ensure(ServerListUnit))return;
+		URoomUnit* unit = CreateWidget<URoomUnit>(GetWorld()->GetGameInstance(), ServerListUnit);
+		if (!ensure(unit))return;
+		ServerList->AddChild(unit);
 	}
 }
 

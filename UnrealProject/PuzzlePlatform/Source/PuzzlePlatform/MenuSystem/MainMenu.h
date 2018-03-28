@@ -14,11 +14,14 @@ class UButton;
 class UWidgetSwitcher;
 class UWidget;
 class UEditableTextBox;
+class UScrollBox;
 UCLASS()
 class PUZZLEPLATFORM_API UMainMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	UMainMenu(const FObjectInitializer & ObjectInitializer);
 public:
 	void SetMenuInterface(IMenuInterface* menuInterface);
 	void Setup();
@@ -53,6 +56,9 @@ private:
 
 		UPROPERTY(meta = (BindWidget))
 		UButton* CancelJoinButton;
+
+		UPROPERTY(meta = (BindWidget))
+		UScrollBox* ServerList;
 
 		UFUNCTION()
 		void OnHost();
