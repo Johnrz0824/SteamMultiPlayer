@@ -4,10 +4,16 @@
 #include "Button.h"
 #include "WidgetSwitcher.h"
 #include "Engine/World.h"
+#include "UObject/ConstructorHelpers.h"
 #include "EditableTextBox.h"
 
-
-
+/*UMainMenu::UMainMenu(const FObjectInitializer & ObjectInitializer)
+{
+	/*ConstructorHelpers::FClassFinder<UUserWidget> ServerListUnitBPClass(TEXT("/Game/MenuSystem/WBP_RoomUnit"));
+	if (!ensure(ServerListUnitBPClass.Class != nullptr))return;
+	ServerListUnit = ServerListUnitBPClass.Class;
+}
+*/
 bool UMainMenu::Initialize()
 {
 	bool success =	Super::Initialize();
@@ -52,8 +58,6 @@ void UMainMenu::OnJoin()
 {
 	if (MenuInterface != nullptr)
 	{
-		if (!ensure(IPInput != nullptr))return;
-		MenuInterface->Join(IPInput->GetText().ToString());
 	}
 }
 
@@ -61,7 +65,6 @@ void UMainMenu::OnQuit()
 {
 	if (MenuInterface != nullptr)
 	{
-		if (!ensure(IPInput != nullptr))return;
 		MenuInterface->QuitGame();
 	}
 }

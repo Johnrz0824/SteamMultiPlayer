@@ -54,9 +54,6 @@ private:
 		UPROPERTY(meta = (BindWidget))
 		UButton* CancelJoinButton;
 
-		UPROPERTY(meta = (BindWidget))
-		UEditableTextBox* IPInput;
-
 		UFUNCTION()
 		void OnHost();
 
@@ -73,4 +70,5 @@ private:
 		void OpenJoinMenu();
 
 		IMenuInterface* MenuInterface;
+		TSubclassOf<class UUserWidget> ServerListUnit;
 };
