@@ -136,7 +136,7 @@ void UPuzzlePlatformGameInstance::LoadMainMenu()
 	UE_LOG(LogTemp, Warning, TEXT("Quit"));
 	
 	APlayerController* controller = GetFirstLocalPlayerController();
-	if (!ensure(controller != nullptr))return;
+	if (!ensure(controller != nullptr))return; 
 	controller->ClientTravel("/Game/MenuSystem/MainMenu", ETravelType::TRAVEL_Absolute);
 }
 
