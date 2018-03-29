@@ -14,7 +14,15 @@ class PUZZLEPLATFORM_API URoomUnit : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	virtual bool Initialize()override;
 	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* ServerName;
-	
+	UPROPERTY(meta = (BindWidget))
+		class UButton* MainButton;
+
+	void Setup(class UMainMenu* Parent, uint32 Index);
+	void OnServerClick();
+private:
+	class UMainMenu* MainMenu;
+	uint32 ButtonIndex;
 };

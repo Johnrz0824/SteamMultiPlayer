@@ -60,15 +60,25 @@ void UMainMenu::OpenLobbyMenu()
 
 void UMainMenu::OnJoin()
 {
+	if (SelectedServerIndex.IsSet())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Selected:%d"), SelectedServerIndex.GetValue());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Not Selected"));
+		MenuInterface->RefreshServerList();
+	}
 	if (MenuInterface != nullptr)
 	{
-		MenuInterface->RefreshServerList();
+		//MenuInterface->RefreshServerList();
 	}
 }
 
 void UMainMenu::SetServerList(TArray<FString> ServerNames)
 {
 	ServerList->ClearChildren();
+	uint32 index = 0;
 	if (MenuInterface != nullptr)
 	{
 		if (!ensure(ServerListUnit))return;
@@ -77,9 +87,16 @@ void UMainMenu::SetServerList(TArray<FString> ServerNames)
 			URoomUnit* unit = CreateWidget<URoomUnit>(GetWorld()->GetGameInstance(), ServerListUnit);
 			if (!ensure(unit))return;
 			ServerList->AddChild(unit);
+			unit->Setup(this, index);
 			unit->ServerName->SetText(FText::FromString(name));
+			index++;
 		}
 	}
+}
+
+void UMainMenu::SelectIndex(uint32 Index)
+{
+	SelectedServerIndex = Index;
 }
 
 void UMainMenu::OnQuit()

@@ -27,6 +27,7 @@ public:
 	void Setup();
 	void TearDown();
 	void SetServerList(TArray<FString> ServerNames);
+	void SelectIndex(uint32 Index);
 
 protected:
 	virtual bool Initialize()override;
@@ -79,4 +80,6 @@ private:
 
 		IMenuInterface* MenuInterface;
 		TSubclassOf<class UUserWidget> ServerListUnit;
+
+		TOptional<uint32> SelectedServerIndex;
 };
