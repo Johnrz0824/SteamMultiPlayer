@@ -21,6 +21,7 @@ public:
 		class UButton* MainButton;
 
 	void Setup(class UMainMenu* Parent, uint32 Index);
+	UFUNCTION()
 	void OnServerClick();
 private:
 	class UMainMenu* MainMenu;
