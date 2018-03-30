@@ -19,28 +19,21 @@ class PUZZLEPLATFORM_API UPuzzlePlatformGameInstance : public UGameInstance, pub
 
 private:
 	class IOnlineSubsystem* OSS;
+	class UMainMenu* MainMenu;
 	IOnlineSessionPtr SessionInterface;
 	TSharedPtr<FOnlineSessionSearch> SessionSearch;
-	class UMainMenu* MainMenu;
 public:
 		UPuzzlePlatformGameInstance(const FObjectInitializer & ObjectInitalizer);
 		virtual void Init()override;
-	
+
 		UFUNCTION(Exec, BlueprintCallable)
 			void LoadMenuWidget();
 		UFUNCTION(Exec, BlueprintCallable)
 			void LoadGameMenu();
 		UFUNCTION(Exec)
-			void OnCreateSessionCompelete(FName SessionName, bool Success);
-		UFUNCTION(Exec)
-			void OnDestroySessionCompelete(FName SessionName, bool Success);
-		UFUNCTION(Exec)
-			void OnFindSessionCompelete(bool Success);
-
-		UFUNCTION(Exec)
 			void CreateGameSession()override;
 		UFUNCTION(Exec)
-			void Join(const FString &address)override;
+			void Join(uint32 Index)override;
 
 		UFUNCTION(Exec)
 			void LoadMainMenu()override;
@@ -51,4 +44,10 @@ public:
 		void RefreshServerList()override;
 		TSubclassOf<class UUserWidget> MenuClass;
 		TSubclassOf<class UUserWidget> GameMenuClass;
+
+
+		void OnCreateSessionCompelete(FName SessionName, bool Success);
+		void OnDestroySessionCompelete(FName SessionName, bool Success);
+		void OnFindSessionCompelete(bool Success);
+		void OnJoinSessionCompelete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 };

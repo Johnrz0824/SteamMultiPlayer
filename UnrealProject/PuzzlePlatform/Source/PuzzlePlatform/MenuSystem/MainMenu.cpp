@@ -49,6 +49,7 @@ void UMainMenu::OpenJoinMenu()
 	if (!ensure(MenuSwitcher != nullptr))return;
 	if (!ensure(JoinMenu != nullptr))return;
 	MenuSwitcher->SetActiveWidget(JoinMenu);
+	MenuInterface->RefreshServerList();
 }
 
 void UMainMenu::OpenLobbyMenu()
@@ -60,18 +61,14 @@ void UMainMenu::OpenLobbyMenu()
 
 void UMainMenu::OnJoin()
 {
-	if (SelectedServerIndex.IsSet())
+	if (SelectedServerIndex.IsSet() && MenuInterface != nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Selected:%d"), SelectedServerIndex.GetValue());
+		MenuInterface->Join(SelectedServerIndex.GetValue());
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Not Selected"));
-		MenuInterface->RefreshServerList();
-	}
-	if (MenuInterface != nullptr)
-	{
-		//MenuInterface->RefreshServerList();
 	}
 }
 
