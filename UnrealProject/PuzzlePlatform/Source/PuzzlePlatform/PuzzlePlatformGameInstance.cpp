@@ -32,6 +32,7 @@ void UPuzzlePlatformGameInstance::Init()
 	OSS = IOnlineSubsystem::Get();
 	if (OSS != nullptr)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Found OSS:%s"),*(OSS->GetSubsystemName().ToString()));
 		SessionInterface = OSS->GetSessionInterface();
 		if (SessionInterface.IsValid())
 		{
@@ -96,10 +97,8 @@ void UPuzzlePlatformGameInstance::OnJoinSessionCompelete(FName SessionName, EOnJ
 		FString address;
 		if (SessionInterface->GetResolvedConnectString(SessionName, address))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("333"));
 			APlayerController* controller = GetFirstLocalPlayerController();
 			if (!ensure(controller != nullptr))return;
-			UE_LOG(LogTemp, Warning, TEXT("444"));
 			controller->ClientTravel(address, ETravelType::TRAVEL_Absolute);
 		}
 	}
