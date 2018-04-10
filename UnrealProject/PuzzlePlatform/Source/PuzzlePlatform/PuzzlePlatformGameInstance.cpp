@@ -52,9 +52,10 @@ void UPuzzlePlatformGameInstance::CreateGameSession()
 		if (existingSession == nullptr)
 		{
 			FOnlineSessionSettings sessionSettings;
-			sessionSettings.bIsLANMatch = true;
+			sessionSettings.bIsLANMatch = false;
 			sessionSettings.NumPublicConnections = 2;
 			sessionSettings.bShouldAdvertise = true;
+			sessionSettings.bUsesPresence = true;
 			SessionInterface->CreateSession(0, SESSION_NAME, sessionSettings);
 		}
 		else
@@ -90,10 +91,8 @@ void UPuzzlePlatformGameInstance::OnDestroySessionCompelete(FName SessionName, b
 
 void UPuzzlePlatformGameInstance::OnJoinSessionCompelete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
 {
-	UE_LOG(LogTemp, Warning, TEXT("111   %s"), *SessionName.ToString());
 	if (Result == EOnJoinSessionCompleteResult::Success && SessionInterface.IsValid())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("222"));
 		FString address;
 		if (SessionInterface->GetResolvedConnectString(SessionName, address))
 		{
@@ -126,7 +125,8 @@ void UPuzzlePlatformGameInstance::RefreshServerList()
 	SessionSearch = MakeShareable(new FOnlineSessionSearch());
 	if (SessionSearch.IsValid())
 	{
-		SessionSearch->bIsLanQuery = true;
+		SessionSearch->MaxSearchResults = 100;
+		SessionSearch->QuerySettings.Set(SEARCH_PRESENCE,true,EOnlineComparisonOp::Equals);
 		SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
 		UE_LOG(LogTemp, Warning, TEXT("Find"));
 	}
