@@ -117,6 +117,9 @@ void UPuzzlePlatformGameInstance::OnFindSessionCompelete( bool Success)
 	{
 		arr.Push(result.Session.GetSessionIdStr());
 	}
+	arr.Add("Test1");
+	arr.Add("Test2");
+	arr.Add("Test3");
 	MainMenu->SetServerList(arr);
 }
 

@@ -82,4 +82,6 @@ private:
 		TSubclassOf<class UUserWidget> ServerListUnit;
 
 		TOptional<uint32> SelectedServerIndex;
+
+		void UpdateChildren();
 };

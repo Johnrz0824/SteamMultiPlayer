@@ -94,6 +94,15 @@ void UMainMenu::SetServerList(TArray<FString> ServerNames)
 void UMainMenu::SelectIndex(uint32 Index)
 {
 	SelectedServerIndex = Index;
+	UpdateChildren();
+}
+
+void UMainMenu::UpdateChildren()
+{
+	for (int i = 0; i<ServerList->GetChildrenCount(); i++)
+	{
+		Cast<URoomUnit>(ServerList->GetChildAt(i))->Selected = (SelectedServerIndex.IsSet() && i == SelectedServerIndex.GetValue());
+	}
 }
 
 void UMainMenu::OnQuit()
