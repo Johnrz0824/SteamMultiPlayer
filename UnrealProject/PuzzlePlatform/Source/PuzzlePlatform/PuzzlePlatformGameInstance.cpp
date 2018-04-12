@@ -119,7 +119,7 @@ void UPuzzlePlatformGameInstance::OnFindSessionCompelete( bool Success)
 		data.Name = result.Session.GetSessionIdStr();
 		data.HostUserName = result.Session.OwningUserId->ToString();
 		data.MaxPlayers = result.Session.SessionSettings.NumPublicConnections;
-		data.MaxPlayers = result.Session.NumOpenPublicConnections;
+		data.CurrentPlayers = data.MaxPlayers - result.Session.NumOpenPublicConnections;
 		arr.Push(data);
 	}
 	MainMenu->SetServerList(arr);
