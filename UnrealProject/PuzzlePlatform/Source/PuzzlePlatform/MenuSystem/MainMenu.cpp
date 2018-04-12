@@ -23,10 +23,12 @@ bool UMainMenu::Initialize()
 	if (!success) return false;
 
 	QuitButton->OnClicked.AddDynamic(this, &UMainMenu::OnQuit);
-	HostBtn->OnClicked.AddDynamic(this,&UMainMenu::OnHost);
+	HostBtn->OnClicked.AddDynamic(this,&UMainMenu::OpenHostMenu);
 	JoinBtn->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
 	ConfirmJoinButton->OnClicked.AddDynamic(this, &UMainMenu::OnJoin);
 	CancelJoinButton->OnClicked.AddDynamic(this, &UMainMenu::OpenLobbyMenu);
+	ConfirmHostButton->OnClicked.AddDynamic(this, &UMainMenu::OnHost);
+	CancelHostButton->OnClicked.AddDynamic(this, &UMainMenu::OpenLobbyMenu);
 
 	return success;
 }
@@ -39,8 +41,15 @@ void UMainMenu::OnHost()
 {
 	if (MenuInterface != nullptr)
 	{
-		MenuInterface->CreateGameSession();
+		MenuInterface->CreateGameSession(HostNameInput->GetText());
 	}
+}
+
+void UMainMenu::OpenHostMenu()
+{
+	if (!ensure(MenuSwitcher != nullptr))return;
+	if (!ensure(HostMenu != nullptr))return;
+	MenuSwitcher->SetActiveWidget(HostMenu);
 }
 
 void UMainMenu::OpenJoinMenu()

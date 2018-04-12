@@ -31,7 +31,7 @@ public:
 		UFUNCTION(Exec, BlueprintCallable)
 			void LoadGameMenu();
 		UFUNCTION(Exec)
-			void CreateGameSession()override;
+			void CreateGameSession(FText ServerName)override;
 		UFUNCTION(Exec)
 			void Join(uint32 Index)override;
 

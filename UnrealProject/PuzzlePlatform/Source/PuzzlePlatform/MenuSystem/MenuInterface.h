@@ -22,7 +22,7 @@ class PUZZLEPLATFORM_API IMenuInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION()
-		virtual void CreateGameSession() = 0;
+		virtual void CreateGameSession(FText ServerName) = 0;
 
 	UFUNCTION()
 		virtual void Join(uint32 Index) = 0;

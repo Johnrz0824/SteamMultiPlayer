@@ -44,7 +44,7 @@ void UPuzzlePlatformGameInstance::Init()
 	}
 }
 
-void UPuzzlePlatformGameInstance::CreateGameSession()
+void UPuzzlePlatformGameInstance::CreateGameSession(FText ServerName)
 {
 	if (SessionInterface.IsValid())
 	{
@@ -56,6 +56,7 @@ void UPuzzlePlatformGameInstance::CreateGameSession()
 			sessionSettings.NumPublicConnections = 2;
 			sessionSettings.bShouldAdvertise = true;
 			sessionSettings.bUsesPresence = true;
+			sessionSettings.Set(TEXT("Test"), ServerName.ToString(),EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 			SessionInterface->CreateSession(0, SESSION_NAME, sessionSettings);
 		}
 		else
@@ -86,7 +87,7 @@ void UPuzzlePlatformGameInstance::OnDestroySessionCompelete(FName SessionName, b
 		UE_LOG(LogTemp, Warning, TEXT("Destroy Fail"));
 		return;
 	}
-	CreateGameSession();
+	//CreateGameSession();
 }
 
 void UPuzzlePlatformGameInstance::OnJoinSessionCompelete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
@@ -120,6 +121,17 @@ void UPuzzlePlatformGameInstance::OnFindSessionCompelete( bool Success)
 		data.HostUserName = result.Session.OwningUserId->ToString();
 		data.MaxPlayers = result.Session.SessionSettings.NumPublicConnections;
 		data.CurrentPlayers = data.MaxPlayers - result.Session.NumOpenPublicConnections;
+		FString Data;
+		if (result.Session.SessionSettings.Get(TEXT("Test"), Data))
+		{
+			data.Name = Data;
+			UE_LOG(LogTemp, Warning, TEXT("Data found in settings: %s"),*Data);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Didn't get expected Data"));
+		}
+
 		arr.Push(data);
 	}
 	MainMenu->SetServerList(arr);

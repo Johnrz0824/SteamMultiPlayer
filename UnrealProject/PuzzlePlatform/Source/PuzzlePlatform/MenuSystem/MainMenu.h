@@ -72,6 +72,17 @@ private:
 		UButton* CancelJoinButton;
 
 		UPROPERTY(meta = (BindWidget))
+		UWidget* HostMenu;
+
+		UPROPERTY(meta = (BindWidget))
+		UButton* ConfirmHostButton;
+
+		UPROPERTY(meta = (BindWidget))
+		UButton* CancelHostButton;
+
+		UPROPERTY(meta = (BindWidget))
+			UEditableTextBox* HostNameInput;
+		UPROPERTY(meta = (BindWidget))
 		UScrollBox* ServerList;
 
 		UFUNCTION()
@@ -88,6 +99,9 @@ private:
 
 		UFUNCTION()
 		void OpenJoinMenu();
+
+		UFUNCTION()
+		void OpenHostMenu();
 
 
 		IMenuInterface* MenuInterface;
