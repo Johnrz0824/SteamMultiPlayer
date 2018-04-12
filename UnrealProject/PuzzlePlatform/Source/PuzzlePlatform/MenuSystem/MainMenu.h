@@ -10,6 +10,18 @@
 /**
  * 
  */
+
+USTRUCT()
+struct FServerData
+{
+	GENERATED_BODY()
+
+	FString Name;
+	uint16 CurrentPlayers;
+	uint32 MaxPlayers;
+	FString HostUserName;
+};
+
 class UButton;
 class UWidgetSwitcher;
 class UWidget;
@@ -26,7 +38,7 @@ public:
 	void SetMenuInterface(IMenuInterface* menuInterface);
 	void Setup();
 	void TearDown();
-	void SetServerList(TArray<FString> ServerNames);
+	void SetServerList(TArray<FServerData> ServerDatas);
 	void SelectIndex(uint32 Index);
 
 protected:

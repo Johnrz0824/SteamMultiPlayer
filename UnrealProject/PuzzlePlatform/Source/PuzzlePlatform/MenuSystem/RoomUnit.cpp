@@ -2,6 +2,7 @@
 
 #include "RoomUnit.h"
 #include "Button.h"
+#include "TextBlock.h"
 #include "MenuSystem/MainMenu.h"
 
 
@@ -23,4 +24,12 @@ bool URoomUnit::Initialize()
 void URoomUnit::OnServerClick()
 {
 	MainMenu->SelectIndex(ButtonIndex);
+}
+
+void URoomUnit::SetInfo(struct FServerData info)
+{
+	ServerName->SetText(FText::FromString(info.Name));
+	HostUserName->SetText(FText::FromString(info.HostUserName));
+	CurrentPlayerCount->SetText(FText::FromString(FString::FromInt(info.CurrentPlayers)));
+	MaxPlayerCount->SetText(FText::FromString(FString::FromInt(info.MaxPlayers)));
 }
