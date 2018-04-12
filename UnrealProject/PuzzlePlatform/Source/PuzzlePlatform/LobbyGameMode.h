@@ -13,8 +13,10 @@ UCLASS()
 class PUZZLEPLATFORM_API ALobbyGameMode : public APuzzlePlatformGameMode
 {
 	GENERATED_BODY()
-	
-	
-	
+
+private:
+	int8 players;
+	void PostLogin(APlayerController* NewPlayer) override;
+	void Logout(AController* Exiting)override;
 	
 };
